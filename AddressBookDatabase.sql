@@ -13,6 +13,8 @@ Zip varchar(6),
 PhoneNumber varchar(10),
 Email varchar(20)
 );
+alter table Address add Id int not null auto_increment primary key;
+desc Address;
 
 select * from Address;
 
@@ -25,7 +27,6 @@ insert into Address(FirstName,lastName,Address,City,State,Zip,PhoneNumber,Email)
 select * from Address;
 
 -- UC4
-alter table Address add primary key(firstName);
 update Address set FirstName = 'Mukesh' where FirstName = 'Suresh';
 update Address set State = 'Rajsthan' where FirstName = 'Mukesh';
 update Address set Email = 'radsp@gmail.com' where FirstName = 'Mahesh';
@@ -41,25 +42,38 @@ select * from Address;
 select * from Address where City = 'Buxar' or State = 'Bihar';
 
 -- UC7
-select Count(*) from Address group by City, State;
+select City, State, Count(*) as NumberOfPerson from Address group by City, State;
 
 -- UC8
 select * from Address where City = 'Buxar' order by FirstName ASC;
 
 -- UC9
 alter table Address Add Type varchar(10);
-select * from Address;
+alter table Address drop column Type;
+CREATE TABLE Type (
+    Type_Id int NOT NULL,
+    Id int not null,
+    PRIMARY KEY (Type_Id),
+    FOREIGN KEY (Id) REFERENCES Address(Id)
+);
+alter table Type add column TypeName varchar(20) not null;
+select * from Type;
 
-update Address set Type = 'Profession' where FirstName = 'Rakesh';
-update Address set Type = 'Friend' where FirstName = 'Mahesh';
-update Address set Type = 'Family' where FirstName = 'Akash';
-update Address set Type = 'Frienf' where FirstName = 'Ankit';
+insert into Type values(10,1,'Profession');
+insert into Type values(20,2,'Family');
+insert into Type values(30,3,'Friend');
+insert into Type values(40,4,'Profession');
+insert into Type values(50,5,'Friend');
+insert into Type values(60,3,'Friend');
+
 select * from Address;
+select * from Type;
 
 -- UC10
-select Count(*) from Address group by Type;
+select TypeName,Count(*) as TypeCount from Type group by TypeName;
 
 -- UC11
-insert into Address(FirstName,lastName,Address,City,State,Zip,PhoneNumber,Email,Type) values('Sanjeev', 'Singh', 'Agra sector 7', 'UP', 'UP', '897987', '6987978979', 'ssanju@gmail.com', 'Friend');  
-insert into Address(FirstName,lastName,Address,City,State,Zip,PhoneNumber,Email,Type) values('Abhishek', 'Sonu', '34 HSR layout', 'Bangalore', 'Karnataka', '560062', '4678689794', 'abhi@gmail.com', 'Family');
-select * from Address
+insert into Type values(70,5,'Friend');
+insert into Type values(80,3,'Friend'); 
+select * from Address;
+select * from Type;
